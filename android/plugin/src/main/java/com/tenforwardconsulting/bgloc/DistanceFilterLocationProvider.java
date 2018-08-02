@@ -393,6 +393,9 @@ public class DistanceFilterLocationProvider extends AbstractLocationProvider imp
     }
 
     public void onPollStationaryLocation(Location location) {
+        if ((location == null) || (stationaryLocation == null) || (config == null)) {
+            return;
+        }
         float stationaryRadius = config.getStationaryRadius();
         if (isMoving) {
             return;
@@ -402,7 +405,7 @@ public class DistanceFilterLocationProvider extends AbstractLocationProvider imp
         }
         float distance = abs(location.distanceTo(stationaryLocation) - stationaryLocation.getAccuracy() - location.getAccuracy());
 
-        if (config.isDebugging()) {
+        if (config.isDebugging() && (locationService != null)) {
             Toast.makeText(locationService, "Stationary exit in " + (stationaryRadius-distance) + "m", Toast.LENGTH_LONG).show();
         }
 
